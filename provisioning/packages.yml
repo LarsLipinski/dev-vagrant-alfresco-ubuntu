@@ -1,0 +1,28 @@
+---
+# Updating Ubuntu
+- name: update packages
+  apt: upgrade=dist update_cache=yes
+
+# Installing additional libs for Alfresco
+- name: install fontconfig
+  apt: name=fontconfig
+- name: install ttf-mscorefonts-installer
+  apt: name=ttf-mscorefonts-installer
+- name: install fonts-noto
+  apt: name=fonts-noto
+- name: install libcups2
+  apt: name=libcups2
+- name: install libfontconfig1
+  apt: name=libfontconfig1
+- name: install libglu1-mesa 12
+  apt: name=libglu1-mesa
+- name: install libice6
+  apt: name=libice6
+- name: install libsm6
+  apt: name=libsm6
+- name: install libxinerama1
+  apt: name=libxinerama1
+- name: install libxrender1
+  apt: name=libxrender1
+- name: install libxt6
+  apt: name=libxt6

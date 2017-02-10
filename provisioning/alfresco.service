@@ -1,0 +1,15 @@
+[Unit]
+Description=Alfresco Community 5 Service
+
+[Service]
+Type=forking
+Environment=LC_ALL=en_US.UTF8
+Environment="JAVA_OPTS=-Djava.security.egd=file:/dev/urandom -Xmx3g"
+ExecStart=/home/ubuntu/alfresco/alfresco.sh start
+ExecStop=/home/ubuntu/alfresco.sh stop
+Restart=always
+User=ubuntu
+LimitNOFILE=8192:65536
+
+[Install]
+WantedBy=multi-user.target

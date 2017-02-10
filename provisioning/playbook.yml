@@ -1,0 +1,17 @@
+---
+- hosts: all
+  
+  tasks:
+  - include: packages.yml
+    become: true
+    become_method: sudo
+
+  - include: alfresco.yml
+
+  - name: reboot VM
+    command: shutdown -r now "Reboot by Ansible"
+    async: 0
+    poll: 0
+    ignore_errors: true
+    become: true
+    become_method: sudo

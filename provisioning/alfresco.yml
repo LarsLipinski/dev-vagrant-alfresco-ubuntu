@@ -1,0 +1,40 @@
+---
+# Alfresco's download server currently uses an intermediate cert
+# that is not provided by the server and missing in this Ubuntu distro
+- name: download missing intermediate cert from Digicert
+  get_url:
+    url: https://www.digicert.com/CACerts/DigiCertSHA2HighAssuranceServerCA.crt
+    dest: /vagrant/provisioning
+    checksum: sha1:A031C46782E6E6C662C2C87C76DA9AA62CCABD8E
+
+- name: convert the intermediate cert from DER to PEM
+  command: openssl x509 -in /vagrant/provisioning/DigiCertSHA2HighAssuranceServerCA.crt -inform der -outform pem -out /usr/local/share/ca-certificates/DigiCertSHA2HighAssuranceServerCA.crt
+  become: true
+  become_method: sudo
+
+- name: install intermediate cert
+  command: update-ca-certificates
+  become: true
+  become_method: sudo
+
+- name: download Alfresco Community installer
+  get_url:
+    url: https://download.alfresco.com/release/community/201605-build-00010/alfresco-community-installer-201605-linux-x64.bin
+    dest: /vagrant/provisioning/alfresco-community-installer-201605-linux-x64.bin
+    checksum: md5:2890894ff827b2b8a6d0a6f9e291e401
+
+- name: execute Alfresco Community installer
+  command: /vagrant/provisioning/alfresco-community-installer-201605-linux-x64.bin --optionfile /vagrant/provisioning/installer-options.txt
+
+- name: add Alfresco service to systemd
+  copy: src=/vagrant/provisioning/alfresco.service dest=/etc/systemd/system/alfresco.service owner=root group=root mode="u+rw,g-wx,o-wx"
+  become: true
+  become_method: sudo
+  
+- name: enable Alfresco starting at boot
+  systemd:
+    name: alfresco
+    enabled: yes
+    masked: no
+  become: true
+  become_method: sudo  

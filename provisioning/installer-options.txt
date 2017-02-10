@@ -1,0 +1,4 @@
+mode=unattended
+prefix=/home/ubuntu/alfresco
+alfresco_admin_password=noproblemo
+baseunixservice_install_as_service=0
